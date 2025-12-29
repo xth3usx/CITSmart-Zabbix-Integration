@@ -142,10 +142,3 @@ Na mesma Action:
 Exemplo:
 
 <img width="944" height="496" alt="210" src="https://github.com/user-attachments/assets/ed3ddeff-8dd7-4b25-9d57-42ae5b1965db" />
-
---------------------------------------------------------------------------
-
-LOGS
-----
-
-O script de fechamento grava logs em: /tmp/citsmart_close_zabbix.log
