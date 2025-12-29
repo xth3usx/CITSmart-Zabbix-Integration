@@ -45,9 +45,6 @@ chown zabbix:zabbix /usr/lib/zabbix/alertscripts/*
 CONFIGURAÇÃO (config.py)
 ------------------------
 
-O arquivo <code>config.py</code> centraliza todas as variáveis de configuração da integração.
-Nenhum ajuste precisa ser feito diretamente nos scripts <code>open.py</code> ou <code>close.py</code>.
-
 <h3>CITSmart</h3>
 
 <p>Define como os scripts se conectam ao ambiente CITSmart.</p>
