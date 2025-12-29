@@ -4,8 +4,7 @@ INTEGRAÇÃO ZABBIX + CITSMART
 Este projeto automatiza a abertura e o encerramento de chamados no CITSmart
 a partir de eventos do Zabbix, utilizando scripts Python executados via Actions.
 
-O objetivo é reduzir esforço operacional, garantir rastreabilidade entre alerta
-e chamado e padronizar o processo de atendimento.
+O objetivo é reduzir esforço operacional e padronizar o processo de atendimento.
 
 --------------------------------------------------------------------------
 
