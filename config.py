@@ -3,7 +3,7 @@
 # =====================================================================
 
 # URL base do serviço CITSmart (não inclua barra final).
-CITSMART_BASE_URL: str = "IP-AQUI"
+CITSMART_BASE_URL: str = "IP-DO-CITSMART"
 
 # Host forçado para CITSmart. Se não for necessário, deixe em branco.
 CITSMART_FORCED_HOST: str = "citsmart.dominio.br"
@@ -22,7 +22,7 @@ CITSMART_PLATFORM: str = "WS"
 # =====================================================================
 
 # URL da API JSON-RPC do Zabbix.  Esta é a porta de entrada para todas as chamadas de automação relacionadas a eventos e reconhecimentos.
-ZABBIX_API_URL: str = "https://10.155.8.11/zabbix/api_jsonrpc.php"
+ZABBIX_API_URL: str = "https://IP-DO-ZABBIX/zabbix/api_jsonrpc.php"
 
 # Token de autenticação da API do Zabbix.  Gere ou forneça o token apropriado para a conta utilizada na automação.
 ZABBIX_API_TOKEN: str = "TOKEN-AQUI"
