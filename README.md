@@ -63,6 +63,7 @@ CITSMART_PLATFORM = "WS"</code></pre>
   <li><strong>CITSMART_USER</strong>: usuário de integração (usar dupla barra <code>\\</code>)</li>
   <li><strong>CITSMART_PASSWORD</strong>: senha do usuário</li>
   <li><strong>CITSMART_PLATFORM</strong>: normalmente <code>WS</code></li>
+</ul>
 
 <h3>Zabbix</h3>
 
