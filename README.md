@@ -43,7 +43,56 @@ chown zabbix:zabbix /usr/lib/zabbix/alertscripts/*
 CONFIGURAÇÃO (config.py)
 ------------------------
 
-Toda a configuração do projeto está centralizada no arquivo config.py.
+O arquivo <code>config.py</code> centraliza todas as variáveis de configuração da integração.
+Nenhum ajuste precisa ser feito diretamente nos scripts <code>open.py</code> ou <code>close.py</code>.
+
+<h3>CITSmart</h3>
+
+<p>Define como os scripts se conectam ao ambiente CITSmart.</p>
+
+<pre><code>CITSMART_BASE_URL = "https://IP_DO_CITSMART"
+CITSMART_FORCED_HOST = "citsmart.seudominio.br"
+
+CITSMART_USER = r"dominio\\usuario"
+CITSMART_PASSWORD = "senha"
+CITSMART_PLATFORM = "WS"</code></pre>
+
+<ul>
+  <li><strong>CITSMART_BASE_URL</strong>: URL base do portal CITSmart</li>
+  <li><strong>CITSMART_FORCED_HOST</strong>: utilizado quando o CITSmart exige header <code>Host</code> específico (proxy / virtual host)</li>
+  <li><strong>CITSMART_USER</strong>: usuário de integração (usar dupla barra <code>\\</code>)</li>
+  <li><strong>CITSMART_PASSWORD</strong>: senha do usuário</li>
+  <li><strong>CITSMART_PLATFORM</strong>: normalmente <code>WS</code></li>
+
+<h3>Zabbix</h3>
+
+<p>Define como os scripts se comunicam com a API do Zabbix.</p>
+
+<pre><code>ZABBIX_API_URL = "https://IP_DO_ZABBIX/zabbix/api_jsonrpc.php"
+ZABBIX_API_TOKEN = "TOKEN_DA_API"
+ZABBIX_VERIFY_SSL = False</code></pre>
+
+<ul>
+  <li><strong>ZABBIX_API_URL</strong>: endpoint da API do Zabbix</li>
+  <li><strong>ZABBIX_API_TOKEN</strong>: token da API (não usar usuário/senha)</li>
+  <li><strong>ZABBIX_VERIFY_SSL</strong>:
+    <ul>
+      <li><code>False</code> → certificado autoassinado / ambiente interno</li>
+      <li><code>True</code> → certificado válido</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Logs</h3>
+
+<p>O script de encerramento grava logs em:</p>
+
+<pre><code>/tmp/citsmart_close_zabbix.log</code></pre>
+
+<p>
+Este arquivo é útil para auditoria e troubleshooting em caso de falha
+na integração.
+</p>
 
 --------------------------------------------------------------------------
 
