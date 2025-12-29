@@ -94,7 +94,7 @@ ZABBIX_VERIFY_SSL = False</code></pre>
 TESTES MANUAIS (RECOMENDADO)
 ----------------------------
 
-Abrir chamado manualmente direto no servidor: <br>
+Abrir chamado manualmente: <br>
 <pre><code>python3 open.py fluxo "Teste manual de abertura"</code></pre>
 
 Fechar chamado manualmente: <br>
