@@ -550,6 +550,5 @@ def main():
                 "  python open.py zabbix 123456 1 'Problema no banco de dados'"
             )
 
-
 if __name__ == "__main__":
     main()
