@@ -30,7 +30,7 @@ RECUPERAÇÃO
 INSTALAÇÃO NO SERVIDOR ZABBIX
 -----------------------------
 
-Os três scripts DEVEM ficar preferencialmente no diretório:
+Os três scripts DEVEM ficar preferencialmente no diretório: <br>
 /usr/lib/zabbix/alertscripts
 
 Ajustar as permissões:
@@ -55,7 +55,7 @@ Abrir chamado manualmente: <br>
 <pre><code>python3 open.py fluxo "Teste manual de abertura"</code></pre>
 
 Fechar chamado manualmente: <br>
-<pre><code>python3 close.py fluxo <id-ticket></code></pre>
+<pre><code>python3 close.py fluxo {coloque-id-ticket-aqui}</code></pre>
 
 --------------------------------------------------------------------------
 
