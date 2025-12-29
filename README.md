@@ -30,7 +30,7 @@ RECUPERAÇÃO
 INSTALAÇÃO NO SERVIDOR ZABBIX
 -----------------------------
 
-Os três scripts DEVEM ficar preferencialmente no diretório: /usr/lib/zabbix/alertscripts
+Os scripts DEVEM ficar preferencialmente no diretório: /usr/lib/zabbix/alertscripts
 
 Ajustar as permissões:
 
