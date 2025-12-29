@@ -29,6 +29,3 @@ ZABBIX_API_TOKEN: str = "TOKEN-AQUI"
 
 # Indica se a verificação de certificado SSL deve ser realizada nas requisições ao Zabbix.
 ZABBIX_VERIFY_SSL: bool = False
-
-# Caminho do arquivo de log utilizado pelo script de fechamento (close.py).
-LOG_FILE: str = "/tmp/citsmart_close_zabbix.log"
