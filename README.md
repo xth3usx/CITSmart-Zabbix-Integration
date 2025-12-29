@@ -67,8 +67,8 @@ SCRIPTS
 Script de abertura:
 <pre><code>python3 /usr/lib/zabbix/alertscripts/open.py zabbix {EVENT.ID} {EVENT.VALUE} "{EVENT.NAME} : {EVENT.OPDATA}"</code></pre>
 
+Script de encerramento (Recovery):
 <pre><code>python3 /usr/lib/zabbix/alertscripts/close.py zabbix {EVENT.ID} &quot;&lt;div&gt;Problema resolvido automaticamente pelo Zabbix&lt;/div&gt;&quot; &quot;&lt;div&gt;Trigger voltou ao estado OK&lt;/div&gt;&quot;</code></pre>
-
 
 Exemplo:
 
