@@ -52,11 +52,11 @@ Toda a configuração do projeto está centralizada no arquivo config.py.
 TESTES MANUAIS (RECOMENDADO)
 ----------------------------
 
-Abrir chamado manualmente:
-python3 open.py fluxo "Teste manual de abertura"
+Abrir chamado manualmente: <br>
+<pre><code>python3 open.py fluxo "Teste manual de abertura"</code></pre>
 
-Fechar chamado manualmente:
-python3 close.py fluxo 12345
+Fechar chamado manualmente: <br>
+<pre><code>python3 close.py fluxo <id-ticket></code></pre>
 
 --------------------------------------------------------------------------
 
