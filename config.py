@@ -3,10 +3,10 @@
 # =====================================================================
 
 # URL base do serviço CITSmart (não inclua barra final).
-CITSMART_BASE_URL: str = "https://10.155.11.2"
+CITSMART_BASE_URL: str = "IP-AQUI"
 
 # Host forçado para CITSmart. Se não for necessário, deixe em branco.
-CITSMART_FORCED_HOST: str = "citsmart.homologacao.uff.br"
+CITSMART_FORCED_HOST: str = "citsmart.dominio.br"
 
 # Usuário de acesso ao CITSmart.
 CITSMART_USER: str = r"citsmart.local\usuario.teste"
