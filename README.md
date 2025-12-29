@@ -36,8 +36,8 @@ Os três scripts DEVEM ficar preferencialmente no diretório:
 
 Ajustar as permissões:
 
-chmod +x /usr/lib/zabbix/alertscripts/open.py
-chmod +x /usr/lib/zabbix/alertscripts/close.py
+chmod +x /usr/lib/zabbix/alertscripts/open.py <br>
+chmod +x /usr/lib/zabbix/alertscripts/close.py <br>
 chown zabbix:zabbix /usr/lib/zabbix/alertscripts/*
 
 --------------------------------------------------------------------------
