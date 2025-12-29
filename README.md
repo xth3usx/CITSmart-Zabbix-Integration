@@ -84,17 +84,6 @@ ZABBIX_VERIFY_SSL = False</code></pre>
   </li>
 </ul>
 
-<h3>Logs</h3>
-
-<p>O script de encerramento grava logs em:</p>
-
-<pre><code>/tmp/citsmart_close_zabbix.log</code></pre>
-
-<p>
-Este arquivo é útil para auditoria e troubleshooting em caso de falha
-na integração.
-</p>
-
 --------------------------------------------------------------------------
 
 TESTES MANUAIS (RECOMENDADO)
