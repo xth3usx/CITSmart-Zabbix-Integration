@@ -27,17 +27,6 @@ ZABBIX_API_URL = config.ZABBIX_API_URL
 ZABBIX_API_TOKEN = config.ZABBIX_API_TOKEN
 ZABBIX_VERIFY_SSL = config.ZABBIX_VERIFY_SSL
 
-# Caminho do log é configurável em config.py
-LOG_FILE = config.LOG_FILE
-
-
-def _log(msg: str):
-    try:
-        with open(LOG_FILE, "a", encoding="utf-8") as f:
-            f.write(f"{datetime.now().isoformat()} {msg}\n")
-    except Exception:
-        pass
-
 
 def zabbix_api(method: str, params: dict):
     payload = {"jsonrpc": "2.0", "method": method, "params": params, "id": 1}
@@ -52,11 +41,9 @@ def zabbix_api(method: str, params: dict):
         )
         data = r.json()
     except Exception as e:
-        _log(f"Erro chamando API do Zabbix ({method}): {e}")
         return None
 
     if isinstance(data, dict) and "error" in data:
-        _log(f"Erro na API do Zabbix: {data['error']}")
         return None
 
     return data.get("result") if isinstance(data, dict) else None
@@ -469,8 +456,6 @@ def main():
         if not ticket_id:
             print("❌ Não foi possível localizar o número do ticket no evento relacionado.")
             sys.exit(2)
-
-        _log(f"Fechando ticket {ticket_id} (recovery_event={event_id} problem_event={problem_event_id})")
 
         closer.executar_fluxo_fechamento(
             ticket_id=int(ticket_id),
