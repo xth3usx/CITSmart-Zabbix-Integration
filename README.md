@@ -6,6 +6,12 @@ a partir de eventos do Zabbix, utilizando scripts Python executados via Actions.
 
 O objetivo é reduzir esforço operacional e padronizar o processo de atendimento.
 
+<h2>Pré-requisitos</h2>
+
+<p>Python 3.8+ com a biblioteca <code>requests</code>.</p>
+
+<pre><code>pip3 install requests</code></pre>
+
 --------------------------------------------------------------------------
 
 VISÃO GERAL
