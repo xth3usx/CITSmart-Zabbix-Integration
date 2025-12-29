@@ -64,6 +64,8 @@ CONFIGURAÇÃO NO ZABBIX
 SCRIPTS
 -------
 
+Configurar dois scripts no zabbix.
+
 Script de abertura:
 <pre><code>python3 /usr/lib/zabbix/alertscripts/open.py zabbix {EVENT.ID} {EVENT.VALUE} "{EVENT.NAME} : {EVENT.OPDATA}"</code></pre>
 
