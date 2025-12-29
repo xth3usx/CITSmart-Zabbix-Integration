@@ -38,8 +38,8 @@ chown zabbix:zabbix /usr/lib/zabbix/alertscripts/*
 
 <h2>Pré-requisitos</h2>
 
-<p>Python 3.8+ com a biblioteca <code>requests</code>.</p>
-<pre><code>pip3 install requests</code></pre>
+<p>Python 3.8+ com a biblioteca <code>requests</code> e <code>urllib3</code>.</p>
+<pre><code>pip install requests urllib3</code></pre>
 
 --------------------------------------------------------------------------
 
