@@ -1,8 +1,7 @@
 INTEGRAÇÃO ZABBIX + CITSMART
 ===========================
 
-Automatização da abertura e o encerramento de chamados no CITSmart
-a partir de eventos do Zabbix, utilizando scripts Python executados via Actions.
+Automatização da abertura e o encerramento de chamados no CITSmart.
 
 --------------------------------------------------------------------------
 
