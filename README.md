@@ -68,12 +68,12 @@ SCRIPTS
 Cadastrar dois scripts no Zabbix:
 
 Script de abertura:
-python3 /usr/lib/zabbix/alertscripts/open.py zabbix {EVENT.ID} {EVENT.VALUE} "{EVENT.NAME} : {EVENT.OPDATA}"
+<pre><code>python3 /usr/lib/zabbix/alertscripts/open.py zabbix {EVENT.ID} {EVENT.VALUE} "{EVENT.NAME} : {EVENT.OPDATA}"</code></pre>
 
 Script de encerramento:
-python3 /usr/lib/zabbix/alertscripts/close.py zabbix {EVENT.ID}
+<pre><code>python3 /usr/lib/zabbix/alertscripts/close.py zabbix {EVENT.ID}
 "<div>Problema resolvido automaticamente pelo Zabbix</div>"
-"<div>Trigger voltou ao estado OK</div>"
+"<div>Trigger voltou ao estado OK</div>"</code></pre>
 
 <img width="1319" height="365" alt="190" src="https://github.com/user-attachments/assets/87293b9a-3d62-444d-8ab4-c7ca0c856869" />
 
@@ -104,11 +104,3 @@ LOGS
 ----
 
 O script de fechamento grava logs em: /tmp/citsmart_close_zabbix.log
-
---------------------------------------------------------------------------
-
-BOAS PRÁTICAS
--------------
-
-- Utilize usuário dedicado no CITSmart
-- Restrinja permissões do arquivo config.py
