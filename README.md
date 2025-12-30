@@ -59,7 +59,7 @@ CITSMART_PLATFORM = "WS"</code></pre>
 <ul>
   <li><strong>CITSMART_BASE_URL</strong>: URL base do portal CITSmart</li>
   <li><strong>CITSMART_FORCED_HOST</strong>: utilizado quando o CITSmart exige header <code>Host</code> específico (proxy / virtual host)</li>
-  <li><strong>CITSMART_USER</strong>: usuário de integração (usar dupla barra <code>\\</code>)</li>
+  <li><strong>CITSMART_USER</strong>: usuário do CITSmart</li>
   <li><strong>CITSMART_PASSWORD</strong>: senha do usuário</li>
   <li><strong>CITSMART_PLATFORM</strong>: normalmente <code>WS</code> de "Web Service"</li>
 </ul>
