@@ -3,7 +3,7 @@
 # =====================================================================
 
 # URL base do serviço CITSmart (não inclua barra final).
-CITSMART_BASE_URL: str = "IP-DO-CITSMART"
+CITSMART_BASE_URL: str = "https://IP-DO-CITSMART"
 
 # Host forçado para CITSmart. Se não for necessário, deixe em branco.
 CITSMART_FORCED_HOST: str = "citsmart.dominio.br"
