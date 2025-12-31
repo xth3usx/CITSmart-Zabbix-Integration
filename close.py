@@ -5,13 +5,11 @@ import json
 import re
 from datetime import datetime
 from urllib.parse import urlparse
+import os
 
 import requests
 import urllib3
 
-# ----------------------------------------------------------------------
-# Integração com arquivo de configuração
-# ----------------------------------------------------------------------
 try:
     import config  # type: ignore
 except ImportError as exc:
@@ -26,6 +24,29 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 ZABBIX_API_URL = config.ZABBIX_API_URL
 ZABBIX_API_TOKEN = config.ZABBIX_API_TOKEN
 ZABBIX_VERIFY_SSL = config.ZABBIX_VERIFY_SSL
+
+
+def _log_ticket_action(action: str, ticket_number: str, id_atividade: str = "", nome_atividade: str = "") -> None:
+    """
+    Log simples de abertura/fechamento de ticket.
+
+    Formato (uma linha):
+      YYYY-MM-DD HH:MM:SS ACTION ticket=<N>
+
+    OBS: arquivo padrão 'tickets.log' no mesmo diretório do script.
+    Pode ser sobrescrito por variável de ambiente: CITSMART_LOG_FILE
+    """
+    log_file = os.environ.get("CITSMART_LOG_FILE") or os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "tickets.log"
+    )
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    line = f"{ts} {action.upper()} ticket={ticket_number}\n"
+    try:
+        with open(log_file, "a", encoding="utf-8") as f:
+            f.write(line)
+    except Exception:
+        # log nunca deve quebrar o fluxo principal
+        pass
 
 
 def zabbix_api(method: str, params: dict):
@@ -118,7 +139,7 @@ def get_latest_problem_event_for_trigger(trigger_id: str) -> dict | None:
 def find_ticket_for_zabbix_event(event_id: str) -> tuple[str | None, str | None]:
     """Retorna (ticket_id, problem_event_id).
 
-    1) tenta achar ticket no próprio event_id (caso você passe o id do problema)
+    1) tenta achar ticket no próprio event_id
     2) se não achar, trata event_id como recovery: pega trigger (objectid) e busca
        último event de problema do trigger.
     """
@@ -142,10 +163,6 @@ def find_ticket_for_zabbix_event(event_id: str) -> tuple[str | None, str | None]
 
     t2 = extract_ticket_from_acks(last_problem)
     return t2, str(last_problem.get("eventid")) if last_problem else None
-
-
-# ======================= CITSMART (seu código) =======================
-
 
 class CITSmarTCloser:
     def __init__(
@@ -346,6 +363,14 @@ class CITSmarTCloser:
         self.save_or_update(dto2)
         print("✅ 2º saveOrUpdate OK")
         print("✅ Fechamento finalizado.")
+
+        # LOG de fechamento do ticket (tenta puxar descrição via restoreRequest)
+        try:
+            id_atv = str(dto2.get("idAtividade") or dto1.get("idAtividade") or getattr(config, "ID_ATIVIDADE", "") or "")
+            nome_atv = str(dto2.get("nomeAtividade") or dto2.get("dsAtividade") or dto1.get("nomeAtividade") or dto1.get("dsAtividade") or "")
+            _log_ticket_action("CLOSE", str(ticket_id), id_atv, nome_atv)
+        except Exception:
+            pass
 
 
 def main():
