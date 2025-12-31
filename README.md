@@ -34,7 +34,7 @@ Estrutura do Projeto
 INSTALAÇÃO NO SERVIDOR ZABBIX
 -----------------------------
 
-1º - Copie os arquivos config.py, open.py, close.py e tickets.log para o servidor Zabbix ou se preferir faça o clone do repositório:
+1º - Copie os arquivos config.py, open.py, close.py e tickets.log para o servidor Zabbix ou faça o clone do repositório:
 <pre><code>git clone https://github.com/xth3usx/CITSmart-Zabbix-Integration.git</code></pre>
 
 Após o clone, mova os arquivos para: /usr/lib/zabbix/alertscripts
