@@ -7,6 +7,7 @@ from datetime import datetime
 import json
 import re
 import urllib3
+import os
 
 try:
     import config  # type: ignore
@@ -20,9 +21,32 @@ ZABBIX_API_TOKEN = config.ZABBIX_API_TOKEN
 ZABBIX_VERIFY_SSL = config.ZABBIX_VERIFY_SSL
 
 
+def _log_ticket_action(action: str, ticket_number: str, id_atividade: str = "", nome_atividade: str = "") -> None:
+    """
+    Log simples de abertura/fechamento de ticket.
+
+    Formato (uma linha):
+      YYYY-MM-DD HH:MM:SS ACTION ticket=<N>
+
+    OBS: arquivo padrão 'tickets.log' no mesmo diretório do script.
+    Pode ser sobrescrito por variável de ambiente: CITSMART_LOG_FILE
+    """
+    log_file = os.environ.get("CITSMART_LOG_FILE") or os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "tickets.log"
+    )
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    line = f"{ts} {action.upper()} ticket={ticket_number}\n"
+    try:
+        with open(log_file, "a", encoding="utf-8") as f:
+            f.write(line)
+    except Exception:
+        # log nunca deve quebrar o fluxo principal
+        pass
+
+
 def zabbix_api(method: str, params: dict):
     """
-    Executa uma chamada à API JSON‑RPC do Zabbix.
+    Executa uma chamada à API JSON-RPC do Zabbix.
 
     :param method: Nome do método da API (por exemplo, 'event.acknowledge').
     :param params: Dicionário com os parâmetros do método.
@@ -55,7 +79,7 @@ def zabbix_acknowledge(event_id: str, ticket_number: str, observacao: str = ""):
     """
     Reconhece um evento no Zabbix adicionando uma mensagem com o número do ticket
     do CITSmart. O parâmetro `action` usa valor 6 (2 + 4) para ao mesmo tempo
-    reconhecer o evento e anexar uma mensagem【15602706877067†L1900-L1955】.
+    reconhecer o evento e anexar uma mensagem.
 
     :param event_id: ID do evento Zabbix a ser reconhecido.
     :param ticket_number: Número do ticket criado no CITSmart.
@@ -68,7 +92,7 @@ def zabbix_acknowledge(event_id: str, ticket_number: str, observacao: str = ""):
         mensagem += f" | {observacao}"
     params = {
         "eventids": [str(event_id)],
-        # 6 = 2 (acknowledge event) + 4 (add message)【15602706877067†L1940-L1955】【15602706877067†L1994-L2005】
+        # 6 = 2 (acknowledge event) + 4 (add message)
         "action": 6,
         "message": mensagem,
     }
@@ -126,6 +150,42 @@ class CITSmarTAutomation:
             print(f"Erro durante o login: {e}")
             return False
 
+    def _get_ticket_activity_info(self, ticket_number: str) -> tuple[str, str]:
+        """
+        Tenta buscar do próprio CITSmart (restoreRequest) a atividade relacionada ao ticket,
+        retornando (idAtividade, nomeAtividade). Caso não encontre, retorna valores de fallback.
+        """
+        # Fallback (mantém seu comportamento atual)
+        fallback_id = str(getattr(config, "ID_ATIVIDADE", "") or "")
+        fallback_nome = "Erro no Solicita"
+
+        try:
+            url_restore = f"{self.base_url}/citsmart/rest/citajax/ticket/serviceRequestIncident/restoreRequest"
+            payload_restore = {
+                "object": {"idSolicitacaoServico": int(ticket_number)},
+                "realUrl": "/citsmart/serviceRequestIncident/serviceRequestIncident.load",
+            }
+            headers_restore = {"Content-Type": "application/json", "Accept": "application/json"}
+            rrestore = self.session.post(url_restore, json=payload_restore, headers=headers_restore)
+            if rrestore.status_code != 200:
+                return fallback_id, fallback_nome
+            dto = rrestore.json() if rrestore.content else {}
+            if not isinstance(dto, dict):
+                return fallback_id, fallback_nome
+
+            id_atividade = str(dto.get("idAtividade") or dto.get("id_atividade") or dto.get("idActivity") or fallback_id)
+            nome_atividade = str(dto.get("nomeAtividade") or dto.get("dsAtividade") or dto.get("atividade") or fallback_nome)
+
+            # Se vier vazio, usa fallback
+            if not id_atividade:
+                id_atividade = fallback_id
+            if not nome_atividade:
+                nome_atividade = fallback_nome
+
+            return id_atividade, nome_atividade
+        except Exception:
+            return fallback_id, fallback_nome
+
     def adicionar_solicitacao_servico(self, observacao="teste"):
         """Adiciona uma solicitação de serviço"""
         print("Adicionando solicitação de serviço...")
@@ -137,7 +197,7 @@ class CITSmarTAutomation:
             "uuid": "4149ce29-154f2bfa-cdb2d33b-b13493cb",
             "idPortfolio": "1",
             "idServico": "1494",
-            "idAtividade": "1496",
+            "idAtividade": config.ID_ATIVIDADE,
             "nomeAtividade": "Erro no Solicita",
             "mostrarDescPortal": "S",
             "idQuestionario": "",
@@ -266,7 +326,7 @@ class CITSmarTAutomation:
         data = {
             "idPortfolio": "1",
             "idServico": "1494",
-            "idAtividade": "1496",
+            "idAtividade": config.ID_ATIVIDADE,
             "tipoPortfolio": "",
             "nomePortfolio": "Central",
             "nomeServicoNegocio": "Solicita",
@@ -294,7 +354,7 @@ class CITSmarTAutomation:
             print(f"Erro ao abrir atividade: {e}")
             return None
 
-    def delegar_tarefa(self, ticket_number: str, observacao: str = "", id_grupo_destino: str = "71"):
+    def delegar_tarefa(self, ticket_number: str, observacao: str = "", id_grupo_destino: str = config.ID_GRUPO_DESTINO):
         """
         Delegar a tarefa recém-criada para um grupo específico.
 
@@ -412,6 +472,9 @@ class CITSmarTAutomation:
             print("Pedidos salvos com sucesso!")
             if ticket_number:
                 print(f"✅ Ticket criado com sucesso! Número: {ticket_number}")
+                # LOG de abertura do ticket (puxando descrição via CITSmart, se possível)
+                id_atv, nome_atv = self._get_ticket_activity_info(str(ticket_number))
+                _log_ticket_action("OPEN", str(ticket_number), id_atv, nome_atv)
             else:
                 print("⚠️ Ticket criado, mas não foi possível obter o número")
         else:
@@ -461,6 +524,9 @@ def main():
                     if response and response.status_code == 200:
                         if ticket_number:
                             print(f"✅ Ticket criado com sucesso! Número: {ticket_number}")
+                            # LOG de abertura do ticket
+                            id_atv, nome_atv = automation._get_ticket_activity_info(str(ticket_number))
+                            _log_ticket_action("OPEN", str(ticket_number), id_atv, nome_atv)
                         else:
                             print(
                                 "⚠️ Ticket criado, mas não foi possível obter o número"
@@ -500,9 +566,12 @@ def main():
                     if resp2 and resp2.status_code == 200:
                         # Abre a atividade
                         automation.abrir_atividade()
-                        # Caso tenhamos número de ticket, podemos delegar e depois associá-lo ao evento
+                        # Caso tenhamos número de ticket, podemos delegar e depois associar id ao evento
                         if ticket_number:
                             print(f"Ticket criado com sucesso! Número: {ticket_number}")
+                            # LOG de abertura do ticket
+                            id_atv, nome_atv = automation._get_ticket_activity_info(str(ticket_number))
+                            _log_ticket_action("OPEN", str(ticket_number), id_atv, nome_atv)
                             # Delegar a tarefa para o grupo 71 (justificativa: observacao)
                             automation.delegar_tarefa(ticket_number, observacao=observacao)
                             # Atribui o número do ticket ao evento Zabbix via reconhecimento
