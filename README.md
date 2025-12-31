@@ -22,6 +22,13 @@ RECUPERAÇÃO
 - O chamado é fechado automaticamente no CITSmart
 - O evento de problema recebe um ack informando o fechamento
 
+Estrutura do Projeto
+
+**config.py** - Arquivo de configuração para personalização das variáveis principais  
+**open.py** - Script responsável pela abertura de chamados  
+**close.py** - Script responsável pelo encerramento de chamados  
+**tickets.log** - Arquivo de logs com registro das operações realizadas
+
 --------------------------------------------------------------------------
 
 INSTALAÇÃO NO SERVIDOR ZABBIX
@@ -29,10 +36,14 @@ INSTALAÇÃO NO SERVIDOR ZABBIX
 
 Os scripts DEVEM ficar preferencialmente no diretório: /usr/lib/zabbix/alertscripts
 
+Criar o arquivo de log:
+<pre><code>touch /usr/lib/zabbix/alertscripts/tickets.log</code></pre>
+
 Ajustar as permissões:
 
 chmod +x /usr/lib/zabbix/alertscripts/open.py <br>
 chmod +x /usr/lib/zabbix/alertscripts/close.py <br>
+chmod 644 /usr/lib/zabbix/alertscripts/tickets.log<br>
 chown zabbix:zabbix /usr/lib/zabbix/alertscripts/*
 
 <h2>Pré-requisitos</h2>
@@ -50,11 +61,14 @@ CONFIGURAÇÃO (config.py)
 <p>Define como os scripts se conectam ao ambiente CITSmart.</p>
 
 <pre><code>CITSMART_BASE_URL = "https://IP_DO_CITSMART"
-CITSMART_FORCED_HOST = "citsmart.seudominio.br"
+CITSMART_FORCED_HOST = "citsmart.homologacao.seudominio.br"
 
 CITSMART_USER = r"dominio\\usuario"
 CITSMART_PASSWORD = "senha"
-CITSMART_PLATFORM = "WS"</code></pre>
+CITSMART_PLATFORM = "WS"
+
+ID_ATIVIDADE = "ID_ATIVIDADE_AQUI"
+ID_GRUPO_DESTINO = "ID_GRUPO_DESTINO_AQUI"</code></pre>
 
 <ul>
   <li><strong>CITSMART_BASE_URL</strong>: URL base do portal CITSmart</li>
@@ -62,6 +76,8 @@ CITSMART_PLATFORM = "WS"</code></pre>
   <li><strong>CITSMART_USER</strong>: usuário do CITSmart</li>
   <li><strong>CITSMART_PASSWORD</strong>: senha do usuário</li>
   <li><strong>CITSMART_PLATFORM</strong>: normalmente <code>WS</code> de "Web Service"</li>
+  <li><strong>ID_ATIVIDADE</strong>: ID da atividade do catálogo de serviços utilizada na abertura do chamado</li>
+  <li><strong>ID_GRUPO_DESTINO</strong>: ID do grupo para delegação automática do ticket</li>
 </ul>
 
 <h3>Zabbix</h3>
@@ -138,3 +154,13 @@ Na mesma Action:
 Exemplo:
 
 <img width="944" height="496" alt="210" src="https://github.com/user-attachments/assets/ed3ddeff-8dd7-4b25-9d57-42ae5b1965db" />
+
+--------------------------------------------------------------------------
+
+Sistema de Logs
+---------------
+
+Sempre que um ticket é aberto ou fechado, as informações são registradas automaticamente no arquivo `tickets.log`, contendo:
+- Data e hora do evento
+- ID do ticket
+- Tipo de ação (OPEN/CLOSE)
