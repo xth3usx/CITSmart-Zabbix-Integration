@@ -34,17 +34,24 @@ Estrutura do Projeto
 INSTALAÇÃO NO SERVIDOR ZABBIX
 -----------------------------
 
-Os scripts DEVEM ficar preferencialmente no diretório: /usr/lib/zabbix/alertscripts
+1º Copiar os arquivos
+Copie os arquivos config.py, open.py e close.py para o servidor Zabbix ou faça o clone do repositório:
+<pre><code>git clone https://github.com/xth3usx/CITSmart-Zabbix-Integration.git</code></pre>
 
-Criar o arquivo de log:
+Após o clone, mova os arquivos para: /usr/lib/zabbix/alertscripts
+
+2º Criar o arquivo de log
+Crie o arquivo de log utilizado pelos scripts:
 <pre><code>touch /usr/lib/zabbix/alertscripts/tickets.log</code></pre>
 
-Ajustar as permissões:
-
+3º Ajustar permissões e proprietário
+Configure as permissões corretas para execução dos scripts e gravação do log:
+<pre><code>
 chmod +x /usr/lib/zabbix/alertscripts/open.py <br>
 chmod +x /usr/lib/zabbix/alertscripts/close.py <br>
 chmod 644 /usr/lib/zabbix/alertscripts/tickets.log<br>
 chown zabbix:zabbix /usr/lib/zabbix/alertscripts/*
+</code></pre>
 
 <h2>Pré-requisitos</h2>
 
